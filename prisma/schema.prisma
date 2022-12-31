@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Subtask{
+  id Int @default(autoincrement()) @id
+  title String
+  description String
+  isCompleted Boolean? @default(false)
+  resolution Resolution @relation(fields: [resolutionId], references: [id])
+  resolutionId Int
+}
+
+model Resolution {
+  id        Int      @default(autoincrement()) @id
+  title     String
+  description   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  isCompleted Boolean? @default(false)
+  subtasks Subtask[]
+  completeby DateTime?
+  completedAt DateTime?
+}
+
+model User {
+  id        Int      @default(autoincrement()) @id
+  email     String   @unique
+  name      String
+  password  String
+  resolutions Resolution[]
+}
