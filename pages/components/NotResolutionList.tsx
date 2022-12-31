@@ -58,12 +58,14 @@ const ResolutionList = () => {
   };
 
   const handleCompleted = async (id: number, userId = id) => {
+    // get date now
+    const completedAt = new Date().toISOString();
     const res = await fetch(`/api/resolution/completed/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id, userId }),
+      body: JSON.stringify({ id, userId,completedAt }),
     });
     const data = await res.json();
     if (data) {
@@ -97,6 +99,9 @@ const ResolutionList = () => {
                 </Text>
                 <Text css={{ textAlign: "center", marginTop: "$5" }}>
                   {resolution.description}
+                </Text>
+                <Text css={{ textAlign: "center", marginTop: "$5" }}>
+                  Compelete By - {resolution.completeby?.slice(0, 10)}
                 </Text>
               </Card.Body>
               <Card.Divider />

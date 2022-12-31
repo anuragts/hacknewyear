@@ -5,16 +5,18 @@ export default async function completed(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id , userId }: { id: string , userId:string } = req.body;
+  const { id , userId , completedAt }: { id: string , userId:string , completedAt:string } = req.body;
   if (!id) {
     return res.status(400).json({ message: "Missing some fields" });
-  } else {
+  } else { 
+    const date:Date = new Date(completedAt)
     const resolution = await prisma.resolution.update({
       where: {
         id: parseInt(id),
       },
       data:{
         isCompleted: true,
+        completedAt:date
       }
     });
     res.status(200).json(resolution);

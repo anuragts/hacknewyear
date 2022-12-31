@@ -73,7 +73,16 @@ const ResolutionList = () => {
   if (userId == "" || userId == "null") {
     router.push("/login");
   }
-
+  if (resolutions.length == 0 ){
+    return (
+      <>
+        <h1 className="text-2xl text-center my-10">Completed Resolutions</h1>
+        <div className="flex justify-center ">
+          <Text size={"$2xl"} color="" className="font-bold text-primary">No Completed Resolutions ... </Text>
+        </div>
+      </>
+    );
+  }
   return (
     <>
         <h1 className="text-2xl text-center my-10">Completed Resolutions</h1>
@@ -88,6 +97,7 @@ const ResolutionList = () => {
               </Card.Body>
               <Card.Divider />
               <Card.Body>
+                <Text css={{textAlign:"center"}}>Compeleted At - {resolution.completedAt?.slice(0,10)}</Text>
               </Card.Body>
             </Card>
           </div>

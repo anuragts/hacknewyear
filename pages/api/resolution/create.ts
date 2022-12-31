@@ -15,11 +15,13 @@ export default async function create(
     return res.status(400).json({ message: "Missing some fields" });
   } else {
     const userIdInt:number = parseInt(userId);
+    //  convert completeby to date
+    const completebyDate:Date = new Date(completeby);
     const resolution = await prisma.resolution.create({
       data: {
         title,
         description,
-        completeby,
+        completeby:completebyDate,
         user: {
           connect: {
             id: userIdInt,  
