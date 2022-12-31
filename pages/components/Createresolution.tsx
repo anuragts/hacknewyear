@@ -1,9 +1,17 @@
 import { useState } from "react";
 import getId from "./getId";
-import { Input, Button } from "@nextui-org/react";
+import { Modal, Button, Text, Input, Row, Checkbox } from "@nextui-org/react";
+
 function Createresolution() {
   const id = getId();
   const [data, setData] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const handler = () => setVisible(true);
+
+  const closeHandler = () => {
+    setVisible(false);
+    console.log("closed");
+  };
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target;
@@ -14,6 +22,7 @@ function Createresolution() {
       body: JSON.stringify({
         title: dataObj.title,
         description: dataObj.description,
+        completeby: dataObj.completeby,
         userId: id,
       }),
       headers: {
@@ -29,37 +38,57 @@ function Createresolution() {
       console.log("failed");
     }
   };
-  return (
-    <div className="flex justify-center">
-      <div>
-        <form onSubmit={handleSubmit} className="my-5 text-center w-min">
+  return (  
+    <div className="flex justify-center font-custom">
+    <Button auto shadow onClick={handler} size="xl">
+        Create a Resolution
+      </Button>
+      <Modal
+        closeButton
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+      >
+        <Modal.Header>
+          <Text className="font-custom" id="modal-title" size={18}>
+            Create a
+            <Text b size={18}>
+            <span></span> Resolution
+            </Text>
+          </Text>
+        </Modal.Header>
+        <form onSubmit={handleSubmit} className="my-5 text-center">
+        <Modal.Body>
           <Input
-            bordered
-            size="lg"
             clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
             name="title"
             placeholder="Enter your title"
-            className="my-5"
+            className="my-5 w-[5rem] font-custom"
             aria-label="title"
           />
-          <br />
           <Input
-            bordered
-            size="lg"
             clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="Description"
             name="description"
-            placeholder="Enter your description"
-            className="my-5"
+            className="my-5 font-custom"
             aria-label="description"
           />
-          <br />
-          <div className="flex justify-center my-5">
-            <Button size="lg" type="submit">
-              Submit
-            </Button>
-          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button size="lg" className="font-custom" type="submit" auto onClick={closeHandler}>
+            Create
+          </Button>
+        </Modal.Footer>
         </form>
-      </div>
+      </Modal>
     </div>
   );
 }
